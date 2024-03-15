@@ -472,6 +472,188 @@ def lado_derecho_OA_coms(t, y):
 
 
 
+""" GRÁFICOS DEL MÓDULO DEL PARÁMETRO DE ORDEN LOCAL z(x,t) """
+# Grafico mapa de color z(t,x):
+def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
+    '''
+    Muestra gráficos del módulo de z(t,x) en función del tiempo en un mapa
+    de color. En el eje horizontal aparece la posición x, en el eje vertical
+    sale el tiempo t, y en color aparece |z| desde 0 a 1.
+
+    Parametros
+    ----------
+    z : [np.matrix]
+        Matriz con los valores del parámetro de orden local (complejos).
+    '''    
+    flip_z = np.flip(z, axis=0) # Giro para que quede bien el eje t
+    modulo_z = np.abs(flip_z)   # Matriz del módulo de z = |z(t,x)|
+
+    # Plot:
+    fig, ax = plt.subplots(1,1)
+    im = ax.imshow(modulo_z, aspect='auto', cmap='cividis', vmin=0, vmax=1)
+    # Labels de los ejes:
+    ax.set_xlabel(r'Posición $x$', size=12)
+    ax.set_ylabel(r'Tiempo $t$', size=12)
+    # Ticks posición:
+    x_ticks_labels = [r'$-\pi$', '0', r'$\pi$']
+    ax.set_xticks([0, int(N1/2), N1-1])
+    ax.set_xticklabels(x_ticks_labels)
+    # Ticks tiempo (están al revés pq el tiempo va de abajo hacia arriba,
+    #              (y los índices de la matriz van de arriba hacia abajo).
+    ax.set_yticks([0, n_tiempos-1])
+    ax.set_yticklabels(['{}'.format(max_t_coms), '{}'.format(min_t)])
+    # Colorbar:
+    cbar = fig.colorbar(im, ticks=[0, 1], orientation='vertical')
+    cbar.set_label(r'$|z|$', size=13)
+    # Savefig y titulo:
+    if TIPO_G == 'omelchenko':
+        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.pdf'
+                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, max_t_coms, title, dt, gamma, A, x0,
+                            np.round(alpha,3), num_x, min_t, max_t_coms))
+        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
+                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, max_t_coms, title, dt, gamma, A, x0,
+                            np.round(alpha,3), num_x, min_t, max_t_coms))
+        ax.set_title(r'{}, $\gamma$={}, $\alpha$={}, $A$={}, $x_0$={}'
+                     .format(title, gamma, np.round(alpha,3), A, x0))
+        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
+                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, max_t_coms, title, dt, gamma, A, x0,
+                            np.round(alpha,3), num_x, min_t, max_t_coms))
+    # Plotear sin parar el código:
+    #fig.canvas.draw()
+    #renderer1 = fig.canvas.renderer
+    #fig.draw(renderer1)
+    #plt.pause(0.001)
+
+#grafico_z(z)
+
+
+
+
+# Funcion para guardar datos:
+def guardar_datos(z_0_global, z_values, t_values, n_tiempos, A1, A2, A3, x0_1,
+                  x0_2, x0_3, alpha_1, alpha_2, alpha_3, epsilon,
+                  t_preliminar, label_ci):
+    '''
+    Guarda datos de respaldo del parametro de orden de las quimeras.
+    '''
+    
+    ''' Paso todos los valores de z(x, t) a una matriz '''
+    # Matriz de z(x,t): sus columnas (h) son z(x, t=t*)
+    matriz_z = np.zeros([n_tiempos, num_x], dtype=complex)
+    matriz_z[0, :] = z_0_global           # Guardo condición inicial
+    
+    for i in range(n_tiempos-1):     # Para c/ tiempo t*
+        matriz_z[i+1, :] = z_values[i]  # guardo z(x, t=t*)
+   
+    # ======== Guardar datos en un archivo de texto:
+    # >>> COMUNIDAD 1:
+    if TIPO_G == 'omelchenko':
+        f1 = open(r'{}/{}/Ott Antonsen z(x,t) {} - CI={}, dt={}, A3={}, x0_3={}, alpha_3={}, num_x={}, min_t={}, max_t={}.txt'
+                 .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com1', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
+                         num_x, min_t, t_preliminar), 'w')
+    
+    f1.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
+    f1.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 1]\n')
+    f1.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )\n\n')
+    f1.write('Parametros:\n')
+    if TIPO_G == 'omelchenko':
+        f1.write('dt={}, gamma_1={}, gamma_2={}\n'.format(dt, gamma_1, gamma_2))
+        f1.write('A1={}, A2={}, A3={}, x0_1={}, x0_2={}, x0_3={}\n'.format(A1, A2,
+                                                                          A3, x0_1,
+                                                                          x0_2, x0_3))
+        f1.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
+                                                           beta_3))
+        f1.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
+                .format(epsilon, num_x, min_t, t_preliminar))
+
+    f1.write('Valores de tiempo t:\n')
+    f1.write('{}/n'.format(t_values))
+    f1.write('/n')
+    f1.write('*** Matriz de z(x,t)\n')
+    f1.write('- Filas (horizontales) : z(x)\n')
+    f1.write('- Columnas (verticales): Tiempo t\n\n')
+
+    f1.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]\n')
+    z1_to_write = matriz_z[:, 0:N1]
+
+    list_z1s = []
+    for i in range(n_tiempos):      # Para cada tiempo t
+        z1_t = []                        # z(x, t=t*)
+        for k in range(N1):          # Para cada posición x
+            z1_x_t = z1_to_write[i, k]        # z(x, t) (en vdd z(t,x) )
+            z1_t.append(z1_x_t)
+        list_z1s.append(z1_t)
+
+    f1.write('{}'.format(list_z1s))            
+    f1.close()
+    
+    # >>> COMUNIDAD 2:
+    if TIPO_G == 'omelchenko':
+        f2 = open(r'{}/{}/Ott Antonsen z(x,t) {} - CI={}, dt={}, A3={}, x0_3={}, alpha_3={}, num_x={}, min_t={}, max_t={}.txt'
+                 .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com2', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
+                         num_x, min_t, t_preliminar), 'w')
+    
+    f2.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
+    f2.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 2] \n')
+    f2.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )\n\n')
+    f2.write('Parametros:\n')
+    if TIPO_G == 'omelchenko':
+        f2.write('dt={}, gamma_1={}, gamma_2={}\n'.format(dt, gamma_1, gamma_2))
+        f2.write('A1={}, A2={}, A3={}, x0_1={}, x0_2={}, x0_3={}\n'.format(A1, A2,
+                                                                          A3, x0_1,
+                                                                          x0_2, x0_3))
+        f2.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
+                                                           beta_3))
+        f2.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
+                .format(epsilon, num_x, min_t, t_preliminar))
+
+    f2.write('Valores de tiempo t:\n')
+    f2.write('{}\n'.format(t_values))
+    f2.write('\n')
+    f2.write('*** Matriz de z(x,t)\n')
+    f2.write('- Filas (horizontales) : z(x)\n')
+    f2.write('- Columnas (verticales): Tiempo t \n\n')
+
+    f2.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]\n')
+    z2_to_write = matriz_z[:, N1:]
+
+    list_z2s = []
+    for i in range(n_tiempos):      # Para cada tiempo t
+        z2_t = []                        # z(x, t=t*)
+        for k in range(N2):          # Para cada posición x
+            z2_x_t = z2_to_write[i, k]        # z(x, t) (en vdd z(t,x) )
+            z2_t.append(z2_x_t)
+        list_z2s.append(z2_t)
+
+    f2.write('{}'.format(list_z2s))            
+    f2.close()
+    
+    # Graficos de |z| hasta ahora:
+    nombre_carpeta_t = 'tf={}'.format(t_preliminar)
+    
+    path_png_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, nombre_carpeta_t)
+    path_pdf_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, nombre_carpeta_t)
+    path_svg_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, nombre_carpeta_t)
+    
+    os.makedirs(path_png_t, exist_ok=True)
+    os.makedirs(path_pdf_t, exist_ok=True)
+    os.makedirs(path_svg_t, exist_ok=True)
+    
+    # grafico z1 hasta ahora:
+    grafico_z(z1_to_write, gamma_1, alpha_1, A1, x0_1, 'Com 1', t_preliminar,
+              n_tiempos)
+    
+    # grafico z2 hasta ahora:
+    grafico_z(z2_to_write, gamma_2, alpha_2, A2, x0_2, 'Com 2', t_preliminar,
+              n_tiempos)
+    return
+
+
+
+
+
+
+
 """ PARÁMETROS INTEGRACIÓN TEMPORAL z(x,t) """
 
 # Evolucion temporal de z(x,t) con RK
@@ -544,6 +726,20 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
         
         t_values.append(solution.t)     # Guardo ese tiempo t*
         z_values.append(solution.y)     # Guardo los valores de z(x, t=t*)
+        
+        # GUARDAR DATOS CADA 1/3 DE LA ITERACIÓN DE TIEMPO:
+        n_tiempos = len(t_values)   # Numero de dt's de tiempo de la integración
+        n_saves = 0
+        t_preliminar = np.round(solution.t, 1)
+        
+        if ((t_preliminar > int(max_t_coms/4)   and n_saves == 0) or 
+            (t_preliminar > int(2*max_t_coms/4) and n_saves == 1) or
+            (t_preliminar > int(3*max_t_coms/4) and n_saves == 2)):
+            ''' guardar datos a los T/4, T/2 y 3T/2 y T segundos '''
+            guardar_datos(z_0_global, z_values, t_values, n_tiempos,
+                          A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
+                          alpha_3, epsilon, t_preliminar, label_ci)
+            n_saves += 1
 
         if solution.status == 'failed':
             print('*** Falló la intergación :(')
@@ -554,7 +750,13 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
             break
 
     n_tiempos = len(t_values)   # Numero de dt's de tiempo de la integración
-
+    
+    # Guardo datos finales:
+    guardar_datos(z_0_global, z_values, t_values, n_tiempos,
+                  A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
+                  alpha_3, epsilon, max_t_coms, label_ci)
+    
+    """
     ''' Paso todos los valores de z(x, t) a una matriz '''
     # Matriz de z(x,t): sus columnas (h) son z(x, t=t*)
     matriz_z = np.zeros([n_tiempos, num_x], dtype=complex)
@@ -570,10 +772,10 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
                  .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com1', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
                          num_x, min_t, max_t_coms), 'w')
     
-    f1.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D/n')
-    f1.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 1]/n')
-    f1.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )/n')
-    f1.write('Parametros:/n')
+    f1.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
+    f1.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 1]\n')
+    f1.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )\n\n')
+    f1.write('Parametros:\n')
     if TIPO_G == 'omelchenko':
         f1.write('dt={}, gamma_1={}, gamma_2={}\n'.format(dt, gamma_1, gamma_2))
         f1.write('A1={}, A2={}, A3={}, x0_1={}, x0_2={}, x0_3={}\n'.format(A1, A2,
@@ -581,17 +783,17 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
                                                                           x0_2, x0_3))
         f1.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
                                                            beta_3))
-        f1.write('epsilon={}, num_x={}, min_t={}, max_t={} s/n'
+        f1.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
                 .format(epsilon, num_x, min_t, max_t_coms))
 
-    f1.write('Valores de tiempo t:/n')
+    f1.write('Valores de tiempo t:\n')
     f1.write('{}/n'.format(t_values))
     f1.write('/n')
-    f1.write('*** Matriz de z(x,t)/n')
-    f1.write('- Filas (horizontales) : z(x)/n')
-    f1.write('- Columnas (verticales): Tiempo t/n/n')
+    f1.write('*** Matriz de z(x,t)\n')
+    f1.write('- Filas (horizontales) : z(x)\n')
+    f1.write('- Columnas (verticales): Tiempo t \n\n')
 
-    f1.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]/n')
+    f1.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]\n')
     z1_to_write = matriz_z[:, 0:N1]
 
     list_z1s = []
@@ -611,10 +813,10 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
                  .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com2', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
                          num_x, min_t, max_t_coms), 'w')
     
-    f2.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D/n')
-    f2.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 2] /n')
-    f2.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )/n')
-    f2.write('Parametros:/n')
+    f2.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
+    f2.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 2] \n')
+    f2.write('~ Tipo de acoplamiento: P(x) = (epsilon/2pi)*(1 + A3 * cos(x - x0_3) )\n\n')
+    f2.write('Parametros:\n')
     if TIPO_G == 'omelchenko':
         f2.write('dt={}, gamma_1={}, gamma_2={}\n'.format(dt, gamma_1, gamma_2))
         f2.write('A1={}, A2={}, A3={}, x0_1={}, x0_2={}, x0_3={}\n'.format(A1, A2,
@@ -622,17 +824,17 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
                                                                           x0_2, x0_3))
         f2.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
                                                            beta_3))
-        f2.write('epsilon={}, num_x={}, min_t={}, max_t={} s/n'
+        f2.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
                 .format(epsilon, num_x, min_t, max_t_coms))
 
-    f2.write('Valores de tiempo t:/n')
+    f2.write('Valores de tiempo t:\n')
     f2.write('{}/n'.format(t_values))
     f2.write('/n')
-    f2.write('*** Matriz de z(x,t)/n')
-    f2.write('- Filas (horizontales) : z(x)/n')
-    f2.write('- Columnas (verticales): Tiempo t/n/n')
+    f2.write('*** Matriz de z(x,t)\n')
+    f2.write('- Filas (horizontales) : z(x)\n')
+    f2.write('- Columnas (verticales): Tiempo t \n\n')
 
-    f2.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]/n')
+    f2.write('[*] Parámetro de orden z(x,t): [copiar todo P y pegar como np.matrix(P)]\n')
     z2_to_write = matriz_z[:, N1:]
 
     list_z2s = []
@@ -645,66 +847,16 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
 
     f2.write('{}'.format(list_z2s))            
     f2.close()
-    
+      
     return matriz_z, t_values, n_tiempos, label_ci
+    """
+    return
 
 #matriz_z, t_values, n_tiempos, label_ci = evolucion_temporal_z()
 
 
 
-""" GRÁFICOS DEL MÓDULO DEL PARÁMETRO DE ORDEN LOCAL z(x,t) """
-# Grafico mapa de color z(t,x):
-def grafico_z(z, gamma, alpha, A, x0, title):
-    '''
-    Muestra gráficos del módulo de z(t,x) en función del tiempo en un mapa
-    de color. En el eje horizontal aparece la posición x, en el eje vertical
-    sale el tiempo t, y en color aparece |z| desde 0 a 1.
 
-    Parametros
-    ----------
-    z : [np.matrix]
-        Matriz con los valores del parámetro de orden local (complejos).
-    '''    
-    flip_z = np.flip(z, axis=0) # Giro para que quede bien el eje t
-    modulo_z = np.abs(flip_z)   # Matriz del módulo de z = |z(t,x)|
-
-    # Plot:
-    fig, ax = plt.subplots(1,1)
-    im = ax.imshow(modulo_z, aspect='auto', cmap='cividis', vmin=0, vmax=1)
-    # Labels de los ejes:
-    ax.set_xlabel(r'Posición $x$', size=12)
-    ax.set_ylabel(r'Tiempo $t$', size=12)
-    # Ticks posición:
-    x_ticks_labels = [r'$-\pi$', '0', r'$\pi$']
-    ax.set_xticks([0, int(N1/2), N1-1])
-    ax.set_xticklabels(x_ticks_labels)
-    # Ticks tiempo (están al revés pq el tiempo va de abajo hacia arriba,
-    #              (y los índices de la matriz van de arriba hacia abajo).
-    ax.set_yticks([0, n_tiempos-1])
-    ax.set_yticklabels(['{}'.format(max_t_coms), '{}'.format(min_t)])
-    # Colorbar:
-    cbar = fig.colorbar(im, ticks=[0, 1], orientation='vertical')
-    cbar.set_label(r'$|z|$', size=13)
-    # Savefig y titulo:
-    if TIPO_G == 'omelchenko':
-        fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.pdf'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, title, dt, gamma, A, x0,
-                            np.round(alpha,3), num_x, min_t, max_t_coms))
-        fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, title, dt, gamma, A, x0,
-                            np.round(alpha,3), num_x, min_t, max_t_coms))
-        ax.set_title(r'{}, $\gamma$={}, $\alpha$={}, $A$={}, $x_0$={}'
-                     .format(title, gamma, np.round(alpha,3), A, x0))
-        fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, title, dt, gamma, A, x0,
-                            np.round(alpha,3), num_x, min_t, max_t_coms))
-    # Plotear sin parar el código:
-    #fig.canvas.draw()
-    #renderer1 = fig.canvas.renderer
-    #fig.draw(renderer1)
-    #plt.pause(0.001)
-
-#grafico_z(z)
 
 
 
@@ -898,14 +1050,14 @@ def ejecutar(x03, cond_inicial=True):
     dx_vec_x = abs(vec_x[1]-vec_x[0])           # distancia entre el eje x
     
     # Tiempo maximo de la simulacion ENTRE comunidades:
-    max_t_coms = 3000
+    max_t_coms = 6
     
-    num_carpeta = -6
+    num_carpeta = -5
 
     # Ejecutar simulacion:
-    for epsilon in vec_epsilon:
-        num_carpeta += 1
-        for gamma_2 in vec_gamma_2:
+    for gamma_2 in vec_gamma_2:
+        num_carpeta += 0
+        for epsilon in vec_epsilon:
             num_carpeta += 1
             for beta_1 in vec_beta_1:
                 alpha_1 = np.pi/2 - beta_1
@@ -961,18 +1113,20 @@ def ejecutar(x03, cond_inicial=True):
                                 else:
                                     max_t2 = 3000
                                 
-                                matriz_z, t_values, n_tiempos, label_ci = evolucion_temporal_z(A1, A2, A3,
-                                                                                               x0_1, x0_2, x0_3,
-                                                                                               alpha_1, alpha_2,
-                                                                                               alpha_3, epsilon,
-                                                                                               max_t1, max_t2)
+                                evolucion_temporal_z(A1, A2, A3, x0_1, x0_2,
+                                                     x0_3, alpha_1, alpha_2,
+                                                     alpha_3, epsilon, max_t1,
+                                                     max_t2)
+                                
+                                """
                                 # Separo matriz_z por comunidades:
                                 matriz_z1 = matriz_z[:, 0:N1]       # z1(x,t)
                                 matriz_z2 = matriz_z[:, N1:]        # z2(x,t)
                                     
                                 # Graficar |z| para ambas comunidades:
-                                grafico_z(matriz_z1, gamma_1, alpha_1, A1, x0_1, 'Com 1')
-                                grafico_z(matriz_z2, gamma_2, alpha_2, A2, x0_2, 'Com 2')
+                                grafico_z(matriz_z1, gamma_1, alpha_1, A1, x0_1, 'Com 1', max_t_coms, n_tiempos)
+                                grafico_z(matriz_z2, gamma_2, alpha_2, A2, x0_2, 'Com 2', max_t_coms, n_tiempos)
+                                """
 
 #ejecutar(x03=0)
 
@@ -987,12 +1141,12 @@ def ejecutar(x03, cond_inicial=True):
 # OBS: Se debe usar el caracter / para separar carpetas en el nombre del directorio:
 # ejemplo:
 #NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
-NOMBRE_DIRECTORIO_DATOS = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades/DATOS-OA'
+NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
 
 # Este es el directorio donde se guardar los datos de las simulaciones:
 # ejemplo:
 #NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
-NOMBRE_DIRECTORIO_TO_SAVE = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades'
+NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
 
 
 
