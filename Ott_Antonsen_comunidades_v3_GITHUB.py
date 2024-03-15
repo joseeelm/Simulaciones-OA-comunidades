@@ -898,7 +898,7 @@ def ejecutar(x03, cond_inicial=True):
     dx_vec_x = abs(vec_x[1]-vec_x[0])           # distancia entre el eje x
     
     # Tiempo maximo de la simulacion ENTRE comunidades:
-    max_t_coms = 1000
+    max_t_coms = 3000
     
     num_carpeta = -6
 
