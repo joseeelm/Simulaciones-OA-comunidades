@@ -1050,7 +1050,7 @@ def ejecutar(x03, cond_inicial=True):
     dx_vec_x = abs(vec_x[1]-vec_x[0])           # distancia entre el eje x
     
     # Tiempo maximo de la simulacion ENTRE comunidades:
-    max_t_coms = 6
+    max_t_coms = 2000
     
     num_carpeta = -5
 
@@ -1141,12 +1141,12 @@ def ejecutar(x03, cond_inicial=True):
 # OBS: Se debe usar el caracter / para separar carpetas en el nombre del directorio:
 # ejemplo:
 #NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
-NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
+NOMBRE_DIRECTORIO_DATOS = r'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
 
 # Este es el directorio donde se guardar los datos de las simulaciones:
 # ejemplo:
 #NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
-NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
+NOMBRE_DIRECTORIO_TO_SAVE = r'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
 
 
 
