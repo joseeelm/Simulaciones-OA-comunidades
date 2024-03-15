@@ -987,7 +987,7 @@ def ejecutar(x03, cond_inicial=True):
 # OBS: Se debe usar el caracter / para separar carpetas en el nombre del directorio:
 # ejemplo:
 #NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
-NOMBRE_DIRECTORIO_DATOS = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades/DATOS OA'
+NOMBRE_DIRECTORIO_DATOS = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades/DATOS-OA'
 
 # Este es el directorio donde se guardar los datos de las simulaciones:
 # ejemplo:
