@@ -985,13 +985,14 @@ def ejecutar(x03, cond_inicial=True):
 
 # La siguiente variable se debe actualizar con el directorio donde estan los datos:
 # OBS: Se debe usar el caracter / para separar carpetas en el nombre del directorio:
-#NOMBRE_DIRECTORIO_DATOS = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-Kuramoto-Comunidades/DATOS simulaciones OA'
 # ejemplo:
-NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
+#NOMBRE_DIRECTORIO_DATOS = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/DATOS simulaciones OA/Solo z0 t_f (alfas segun yo)'
+NOMBRE_DIRECTORIO_DATOS = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-Kuramoto-Comunidades/DATOS simulaciones OA'
 
 # Este es el directorio donde se guardar los datos de las simulaciones:
-NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
-#NOMBRE_DIRECTORIO_TO_SAVE = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades'
+# ejemplo:
+#NOMBRE_DIRECTORIO_TO_SAVE = 'E:/NETWORKS and DYNAMICS/Ott-Antonsen/Comunidades/OA/alfas segun yo'
+NOMBRE_DIRECTORIO_TO_SAVE = 'D:/Proyectos/Jose Luis Lopez/Simulaciones-OA-Comunidades'
 
 
 
