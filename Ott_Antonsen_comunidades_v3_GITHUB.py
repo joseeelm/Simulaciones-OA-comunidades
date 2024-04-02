@@ -732,10 +732,8 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
         n_saves = 0
         t_preliminar = np.round(solution.t, 1)
         
-        if ((t_preliminar > int(max_t_coms/4)   and n_saves == 0) or 
-            (t_preliminar > int(2*max_t_coms/4) and n_saves == 1) or
-            (t_preliminar > int(3*max_t_coms/4) and n_saves == 2)):
-            ''' guardar datos a los T/4, T/2 y 3T/2 y T segundos '''
+        if (t_preliminar > int(max_t_coms/2) and n_saves == 0):
+            ''' guardar datos a los T/2 segundos '''
             guardar_datos(z_0_global, z_values, t_values, n_tiempos,
                           A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
                           alpha_3, epsilon, t_preliminar, label_ci)
@@ -1135,6 +1133,8 @@ def ejecutar(x03, cond_inicial=True):
 """ ~~~~~~~~~~~~~~~~~~~~~~~~~~~ PARÁMETROS ~~~~~~~~~~~~~~~~~~~~~~~~~~~ """
 # OBS: por como esta el codigo, N1 debe ser igual a N2 (numero de
 # discretizaciones espaciales para cada comunidad de osciladores).
+
+
 
 
 # La siguiente variable se debe actualizar con el directorio donde estan los datos:
