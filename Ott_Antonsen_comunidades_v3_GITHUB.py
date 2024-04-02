@@ -1039,7 +1039,7 @@ def ejecutar(x03, cond_inicial=True):
 
     # Parámetros G(x) omelchenko - INTERACCION ENTRE COMUNIDADES
     A3 = 1                       # De la distribución G(x)
-    vec_epsilon = [0.01, 0.1, 1]
+    vec_epsilon = [0.01, 0.1]
     x0_3 = x03
     
     # Autocalculables:
