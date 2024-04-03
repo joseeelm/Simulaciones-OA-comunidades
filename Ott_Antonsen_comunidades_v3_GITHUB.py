@@ -149,8 +149,8 @@ def graficar_G(func, A, x0, title):
     if TIPO_G == 'omelchenko':
         fig.savefig(r'{}/{}/Funcion de acoplamiento G ({}) - A={}, x0={}.pdf'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, title, A, x0))
-        fig.savefig(r'{}/{}/Funcion de acoplamiento G ({}) - A={}, x0={}.svg'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, title, A, x0))
+        #fig.savefig(r'{}/{}/Funcion de acoplamiento G ({}) - A={}, x0={}.svg'
+        #            .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, title, A, x0))
         ax.set_title('Función de acoplamiento no-local G(x) - {}'.format(title))
         fig.savefig(r'{}/{}/Funcion de acoplamiento G ({}) - A={}, x0={}.png'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, title, A, x0))
@@ -319,9 +319,9 @@ def graficar_z_inicial(z_0, A, x0, alpha, gamma, label=''):
         fig.savefig(r'{}/{}/Cond. inicial mod(z) ({}) - y={}, A={}, x0={}, alpha={}, min_t={}, max_t={}, num_x={}.pdf'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, label, gamma, A, x0, np.round(alpha,3),
                             min_t, max_t, num_x))
-        fig.savefig(r'{}/{}/Cond. inicial mod(z) ({}) - y={}, A={}, x0={}, alpha={}, min_t={}, max_t={}, num_x={}.svg'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, label, gamma, A, x0, np.round(alpha,3),
-                            min_t, max_t, num_x))
+        #fig.savefig(r'{}/{}/Cond. inicial mod(z) ({}) - y={}, A={}, x0={}, alpha={}, min_t={}, max_t={}, num_x={}.svg'
+        #            .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, label, gamma, A, x0, np.round(alpha,3),
+        #                    min_t, max_t, num_x))
         ax.set_title('Cond. inicial mod(z) - {}'.format(label))
         fig.savefig(r'{}/{}/Cond. inicial mod(z) ({}) - y={}, A={}, x0={}, alpha={}, min_t={}, max_t={}, num_x={}.png'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, label, gamma, A, x0, np.round(alpha,3),
@@ -514,9 +514,9 @@ def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
         fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.pdf'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, max_t_coms, title, dt, gamma, A, x0,
                             np.round(alpha,3), num_x, min_t, max_t_coms))
-        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, max_t_coms, title, dt, gamma, A, x0,
-                            np.round(alpha,3), num_x, min_t, max_t_coms))
+        #fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
+        #            .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, max_t_coms, title, dt, gamma, A, x0,
+        #                    np.round(alpha,3), num_x, min_t, max_t_coms))
         ax.set_title(r'{}, $\gamma$={}, $\alpha$={}, $A$={}, $x_0$={}'
                      .format(title, gamma, np.round(alpha,3), A, x0))
         fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
@@ -535,7 +535,8 @@ def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
 
 
 # Funcion para guardar datos:
-def guardar_datos(z_0_global, z_values, t_values, n_tiempos, A1, A2, A3, x0_1,
+def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
+                  A1, A2, A3, x0_1,
                   x0_2, x0_3, alpha_1, alpha_2, alpha_3, epsilon,
                   t_preliminar, label_ci):
     '''
@@ -572,8 +573,8 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos, A1, A2, A3, x0_1,
                 .format(epsilon, num_x, min_t, t_preliminar))
 
     f1.write('Valores de tiempo t:\n')
-    f1.write('{}/n'.format(t_values))
-    f1.write('/n')
+    f1.write('{}\n'.format(t_values))
+    f1.write('\n')
     f1.write('*** Matriz de z(x,t)\n')
     f1.write('- Filas (horizontales) : z(x)\n')
     f1.write('- Columnas (verticales): Tiempo t\n\n')
@@ -638,11 +639,11 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos, A1, A2, A3, x0_1,
     
     path_png_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, nombre_carpeta_t)
     path_pdf_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, nombre_carpeta_t)
-    path_svg_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, nombre_carpeta_t)
+    #path_svg_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, nombre_carpeta_t)
     
     os.makedirs(path_png_t, exist_ok=True)
     os.makedirs(path_pdf_t, exist_ok=True)
-    os.makedirs(path_svg_t, exist_ok=True)
+    #os.makedirs(path_svg_t, exist_ok=True)
     
     # grafico z1 hasta ahora:
     grafico_z(z1_to_write, gamma_1, alpha_1, A1, x0_1, 'Com 1', t_preliminar,
@@ -652,8 +653,6 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos, A1, A2, A3, x0_1,
     grafico_z(z2_to_write, gamma_2, alpha_2, A2, x0_2, 'Com 2', t_preliminar,
               n_tiempos)
     return
-
-
 
 
 
@@ -732,17 +731,17 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
         t_values.append(solution.t)     # Guardo ese tiempo t*
         z_values.append(solution.y)     # Guardo los valores de z(x, t=t*)
         
-        # GUARDAR DATOS CADA 1/3 DE LA ITERACIÓN DE TIEMPO:
-        n_tiempos = len(t_values)   # Numero de dt's de tiempo de la integración
-        n_saves = 0
-        t_preliminar = np.round(solution.t, 1)
+        # GUARDAR DATOS CADA 1/2 DE LA ITERACIÓN DE TIEMPO:
+        #n_tiempos = len(t_values)   # Numero de dt's de tiempo de la integración
+        #n_saves = 0
+        #t_preliminar = np.round(solution.t, 1)
         
-        if (t_preliminar > int(max_t_coms/2) and n_saves == 0):
-            ''' guardar datos a los T/2 segundos '''
-            guardar_datos(z_0_global, z_values, t_values, n_tiempos,
-                          A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
-                          alpha_3, epsilon, t_preliminar, label_ci)
-            n_saves += 1
+        #if (t_preliminar > int(max_t_coms/2) and n_saves == 0):
+        #    ''' guardar datos a los T/2 segundos '''
+        #    guardar_datos(z_0_global, z_values, t_values, n_tiempos,
+        #                  A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
+        #                  alpha_3, epsilon, t_preliminar, label_ci)
+        #    n_saves += 1
 
         if solution.status == 'failed':
             print('*** Falló la intergación :(')
@@ -754,10 +753,15 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
 
     n_tiempos = len(t_values)   # Numero de dt's de tiempo de la integración
     
-    # Guardo datos finales:
-    guardar_datos(z_0_global, z_values, t_values, n_tiempos,
-                  A1, A2, A3, x0_1, x0_2, x0_3, alpha_1, alpha_2,
-                  alpha_3, epsilon, max_t_coms, label_ci)
+    # Guardo datos finales (solo del ultimo tercio de tiempos):
+    index_t_inicial_to_save = int(n_tiempos * (2/3))
+    z_values_to_save = z_values[index_t_inicial_to_save:]
+    t_values_to_save = t_values[index_t_inicial_to_save:]
+    n_tiempos_to_save = len(t_values_to_save)
+    
+    guardar_datos(z_0_global, z_values_to_save, t_values_to_save,
+                  n_tiempos_to_save, A1, A2, A3, x0_1, x0_2, x0_3,
+                  alpha_1, alpha_2, alpha_3, epsilon, max_t_coms, label_ci)
     
     """
     ''' Paso todos los valores de z(x, t) a una matriz '''
@@ -861,13 +865,9 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
 
 
 
-
-
-
-
 # Función para leer datos ya obtenidos en simulaciones anteriores:
 def leer_datos_z_una_com_enteros(gamma, A, x0, alpha, num_x,
-                         label_ci='cos2(x medios)', mod_z=False):
+                                 label_ci='cos2(x medios)', mod_z=False):
     '''
     Lee los datos de la simulación numérica y entrega:
 
@@ -1090,17 +1090,17 @@ def ejecutar(x03, cond_inicial=True):
                                 nombre_carpeta = '{}/x03={}'.format(num_carpeta, x0_3)
                                 nombre_carpeta_png = '{}/x03={}/png'.format(num_carpeta, x0_3)
                                 nombre_carpeta_pdf = '{}/x03={}/pdf'.format(num_carpeta, x0_3)
-                                nombre_carpeta_svg = '{}/x03={}/svg'.format(num_carpeta, x0_3)
+                                #nombre_carpeta_svg = '{}/x03={}/svg'.format(num_carpeta, x0_3)
                                 
                                 path = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta)
                                 path_png = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png)
                                 path_pdf = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf)
-                                path_svg = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg)
+                                #path_svg = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg)
                                 
                                 os.makedirs(path, exist_ok=True)
                                 os.makedirs(path_png, exist_ok=True)
                                 os.makedirs(path_pdf, exist_ok=True)
-                                os.makedirs(path_svg, exist_ok=True)
+                                #os.makedirs(path_svg, exist_ok=True)
                                 # --------------------------------------------------
                                 
                                 exp_neg_3 = complex(np.cos(alpha_3), -np.sin(alpha_3))    # e^{-i*alpha}
