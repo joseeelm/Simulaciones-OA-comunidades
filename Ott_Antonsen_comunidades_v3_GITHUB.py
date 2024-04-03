@@ -478,7 +478,7 @@ def lado_derecho_OA_coms(t, y):
 
 """ GRÁFICOS DEL MÓDULO DEL PARÁMETRO DE ORDEN LOCAL z(x,t) """
 # Grafico mapa de color z(t,x):
-def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
+def grafico_z(z, gamma, alpha, A, x0, title, t_inicial_to_save, n_tiempos):
     '''
     Muestra gráficos del módulo de z(t,x) en función del tiempo en un mapa
     de color. En el eje horizontal aparece la posición x, en el eje vertical
@@ -505,22 +505,22 @@ def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
     # Ticks tiempo (están al revés pq el tiempo va de abajo hacia arriba,
     #              (y los índices de la matriz van de arriba hacia abajo).
     ax.set_yticks([0, n_tiempos-1])
-    ax.set_yticklabels(['{}'.format(max_t_coms), '{}'.format(min_t)])
+    ax.set_yticklabels(['{}'.format(max_t_coms), '{}'.format(t_inicial_to_save)])
     # Colorbar:
     cbar = fig.colorbar(im, ticks=[0, 1], orientation='vertical')
     cbar.set_label(r'$|z|$', size=13)
     # Savefig y titulo:
     if TIPO_G == 'omelchenko':
-        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.pdf'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, max_t_coms, title, dt, gamma, A, x0,
+        fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.pdf'
+                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, title, dt, gamma, A, x0,
                             np.round(alpha,3), num_x, min_t, max_t_coms))
-        #fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
-        #            .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, max_t_coms, title, dt, gamma, A, x0,
+        #fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.svg'
+        #            .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, title, dt, gamma, A, x0,
         #                    np.round(alpha,3), num_x, min_t, max_t_coms))
         ax.set_title(r'{}, $\gamma$={}, $\alpha$={}, $A$={}, $x_0$={}'
                      .format(title, gamma, np.round(alpha,3), A, x0))
-        fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
-                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, max_t_coms, title, dt, gamma, A, x0,
+        fig.savefig(r'{}/{}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
+                    .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, title, dt, gamma, A, x0,
                             np.round(alpha,3), num_x, min_t, max_t_coms))
         plt.close(fig)
     # Plotear sin parar el código:
@@ -538,7 +538,7 @@ def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
 def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
                   A1, A2, A3, x0_1,
                   x0_2, x0_3, alpha_1, alpha_2, alpha_3, epsilon,
-                  t_preliminar, label_ci):
+                  t_inicial_to_save, label_ci):
     '''
     Guarda datos de respaldo del parametro de orden de las quimeras.
     '''
@@ -556,7 +556,7 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
     if TIPO_G == 'omelchenko':
         f1 = open(r'{}/{}/Ott Antonsen z(x,t) {} - CI={}, dt={}, A3={}, x0_3={}, alpha_3={}, num_x={}, min_t={}, max_t={}.txt'
                  .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com1', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
-                         num_x, min_t, t_preliminar), 'w')
+                         num_x, min_t, max_t_coms), 'w')
     
     f1.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
     f1.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 1]\n')
@@ -570,7 +570,7 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
         f1.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
                                                            beta_3))
         f1.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
-                .format(epsilon, num_x, min_t, t_preliminar))
+                .format(epsilon, num_x, min_t, max_t_coms))
 
     f1.write('Valores de tiempo t:\n')
     f1.write('{}\n'.format(t_values))
@@ -597,7 +597,7 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
     if TIPO_G == 'omelchenko':
         f2 = open(r'{}/{}/Ott Antonsen z(x,t) {} - CI={}, dt={}, A3={}, x0_3={}, alpha_3={}, num_x={}, min_t={}, max_t={}.txt'
                  .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta, 'Com2', label_ci, dt, A3, x0_3, np.round(alpha_3,3),
-                         num_x, min_t, t_preliminar), 'w')
+                         num_x, min_t, max_t_coms), 'w')
     
     f2.write('*** Valores de z1(x,t) de la Ec. de Ott-Antonsen Espacial 1D\n')
     f2.write('~ Tipo de interaccion: COMUNIDADES [COMUNIDAD 2] \n')
@@ -611,7 +611,7 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
         f2.write('beta_1={}, beta_2={}, beta_3={}\n'.format(beta_1, beta_2,
                                                            beta_3))
         f2.write('epsilon={}, num_x={}, min_t={}, max_t={} s\n\n'
-                .format(epsilon, num_x, min_t, t_preliminar))
+                .format(epsilon, num_x, min_t, max_t_coms))
 
     f2.write('Valores de tiempo t:\n')
     f2.write('{}\n'.format(t_values))
@@ -635,23 +635,23 @@ def guardar_datos(z_0_global, z_values, t_values, n_tiempos,
     f2.close()
     
     # Graficos de |z| hasta ahora:
-    nombre_carpeta_t = 'tf={}'.format(t_preliminar)
-    
-    path_png_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, nombre_carpeta_t)
-    path_pdf_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, nombre_carpeta_t)
+    #nombre_carpeta_t = 'tf={}'.format(t_preliminar)
+    #
+    #path_png_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, nombre_carpeta_t)
+    #path_pdf_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_pdf, nombre_carpeta_t)
     #path_svg_t = os.path.join(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_svg, nombre_carpeta_t)
     
-    os.makedirs(path_png_t, exist_ok=True)
-    os.makedirs(path_pdf_t, exist_ok=True)
+    #os.makedirs(path_png_t, exist_ok=True)
+    #os.makedirs(path_pdf_t, exist_ok=True)
     #os.makedirs(path_svg_t, exist_ok=True)
     
     # grafico z1 hasta ahora:
-    grafico_z(z1_to_write, gamma_1, alpha_1, A1, x0_1, 'Com 1', t_preliminar,
-              n_tiempos)
+    grafico_z(z1_to_write, gamma_1, alpha_1, A1, x0_1, 'Com 1',
+              t_inicial_to_save, n_tiempos)
     
     # grafico z2 hasta ahora:
-    grafico_z(z2_to_write, gamma_2, alpha_2, A2, x0_2, 'Com 2', t_preliminar,
-              n_tiempos)
+    grafico_z(z2_to_write, gamma_2, alpha_2, A2, x0_2, 'Com 2',
+              t_inicial_to_save, n_tiempos)
     return
 
 
@@ -757,11 +757,12 @@ def evolucion_temporal_z(A1, A2, A3, x0_1, x0_2, x0_3,
     index_t_inicial_to_save = int(n_tiempos * (2/3))
     z_values_to_save = z_values[index_t_inicial_to_save:]
     t_values_to_save = t_values[index_t_inicial_to_save:]
+    t_inicial_to_save = int(t_values_to_save[0])
     n_tiempos_to_save = len(t_values_to_save)
     
     guardar_datos(z_0_global, z_values_to_save, t_values_to_save,
                   n_tiempos_to_save, A1, A2, A3, x0_1, x0_2, x0_3,
-                  alpha_1, alpha_2, alpha_3, epsilon, max_t_coms, label_ci)
+                  alpha_1, alpha_2, alpha_3, epsilon, t_inicial_to_save, label_ci)
     
     """
     ''' Paso todos los valores de z(x, t) a una matriz '''
@@ -997,7 +998,6 @@ TIPO_G = 'omelchenko'     # = {'omelchenko', 'omel_local', 'asim_vecinos'}
 min_t = 0
 max_t = 1500                 # t_max para la integración
 dt = 0.1
-
 
 
 
