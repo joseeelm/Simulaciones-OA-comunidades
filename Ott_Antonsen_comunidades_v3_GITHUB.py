@@ -154,11 +154,13 @@ def graficar_G(func, A, x0, title):
         ax.set_title('Función de acoplamiento no-local G(x) - {}'.format(title))
         fig.savefig(r'{}/{}/Funcion de acoplamiento G ({}) - A={}, x0={}.png'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, title, A, x0))
+        plt.close(fig)
     # Plotear sin parar el código:
     #fig.canvas.draw()
     #renderer = fig.canvas.renderer
     #fig.draw(renderer)
     #plt.pause(0.001)
+    
     
 
 
@@ -324,11 +326,13 @@ def graficar_z_inicial(z_0, A, x0, alpha, gamma, label=''):
         fig.savefig(r'{}/{}/Cond. inicial mod(z) ({}) - y={}, A={}, x0={}, alpha={}, min_t={}, max_t={}, num_x={}.png'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, label, gamma, A, x0, np.round(alpha,3),
                             min_t, max_t, num_x))
+        plt.close(fig)
     # Plotear sin parar el código:
     #fig.canvas.draw()
     #renderer = fig.canvas.renderer
     #fig.draw(renderer)
     #plt.pause(0.001)
+    
 
 
 
@@ -518,6 +522,7 @@ def grafico_z(z, gamma, alpha, A, x0, title, max_t_coms, n_tiempos):
         fig.savefig(r'{}/{}/tf={}/Modulo z ({}) - dt={}, y={}, A={}, x0={}, alpha={}, num_x={}, min_t={}, max_t={}.png'
                     .format(NOMBRE_DIRECTORIO_TO_SAVE, nombre_carpeta_png, max_t_coms, title, dt, gamma, A, x0,
                             np.round(alpha,3), num_x, min_t, max_t_coms))
+        plt.close(fig)
     # Plotear sin parar el código:
     #fig.canvas.draw()
     #renderer1 = fig.canvas.renderer
@@ -1128,14 +1133,9 @@ def ejecutar(x03, cond_inicial=True):
 
 #ejecutar(x03=0)
 
-
-
 """ ~~~~~~~~~~~~~~~~~~~~~~~~~~~ PARÁMETROS ~~~~~~~~~~~~~~~~~~~~~~~~~~~ """
 # OBS: por como esta el codigo, N1 debe ser igual a N2 (numero de
 # discretizaciones espaciales para cada comunidad de osciladores).
-
-
-
 
 # La siguiente variable se debe actualizar con el directorio donde estan los datos:
 # OBS: Se debe usar el caracter / para separar carpetas en el nombre del directorio:
